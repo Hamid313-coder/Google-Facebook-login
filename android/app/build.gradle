@@ -290,6 +290,7 @@ dependencies {
      implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation project(':react-native-fbsdk-next')
 }
 
 if (isNewArchitectureEnabled()) {
