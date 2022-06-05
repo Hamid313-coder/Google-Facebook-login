@@ -6,6 +6,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import {AccessToken, LoginButton} from 'react-native-fbsdk-next';
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
@@ -53,10 +54,18 @@ function App(props) {
         '500354891175-fqmkld9ttpuau9aqcgg4pdpuep09t38q.apps.googleusercontent.com',
     });
   }, []);
+  //facebook login note: about
+  //   requesting additional permissions with Login Manager
+  // You can also use the Login Manager with custom UI to perform Login.
 
   return (
     <SafeAreaView
-      style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+      }}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <View>
           <GoogleSigninButton
@@ -71,6 +80,26 @@ function App(props) {
           {loggedIn && (
             <Button onPress={signOut} title="LogOut" color="red"></Button>
           )}
+        </View>
+        <View
+          style={{
+            height: '20%',
+            marginTop: '10%',
+          }}>
+          <LoginButton
+            onLoginFinished={(error, result) => {
+              if (error) {
+                console.log('login has error: ' + result.error);
+              } else if (result.isCancelled) {
+                console.log('login is cancelled.');
+              } else {
+                AccessToken.getCurrentAccessToken().then(data => {
+                  console.log(data.accessToken.toString());
+                });
+              }
+            }}
+            onLogoutFinished={() => console.log('logout.')}
+          />
         </View>
       </View>
     </SafeAreaView>
